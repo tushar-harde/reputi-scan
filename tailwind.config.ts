@@ -26,7 +26,8 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					glow: 'hsl(var(--primary-glow))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -35,6 +36,14 @@ export default {
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
+				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
@@ -62,6 +71,25 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				}
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-secondary': 'var(--gradient-secondary)',
+				'gradient-danger': 'var(--gradient-danger)',
+				'gradient-success': 'var(--gradient-success)'
+			},
+			boxShadow: {
+				'neumorphic': 'var(--shadow-neumorphic)',
+				'elevated': 'var(--shadow-elevated)',
+				'glow': 'var(--shadow-glow)'
+			},
+			transitionTimingFunction: {
+				'bounce': 'var(--ease-bounce)',
+				'smooth': 'var(--ease-smooth)'
+			},
+			fontFamily: {
+				'inter': ['Inter', 'sans-serif'],
+				'sora': ['Sora', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

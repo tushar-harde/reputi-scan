@@ -2,41 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Web3 Wallet Reputation AI Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Dark Web3 theme by default */
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Cyber purple primary */
+    --primary: 258 89% 66%;
+    --primary-foreground: 222 47% 5%;
+    --primary-glow: 258 89% 80%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Subtle dark secondary */
+    --secondary: 222 47% 12%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 222 47% 12%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 222 47% 15%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 84.2% 60.2%;
+    /* Web3 danger red */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Success green */
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
 
-    --radius: 0.5rem;
+    /* Warning orange */
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 5%;
+
+    --border: 222 47% 15%;
+    --input: 222 47% 12%;
+    --ring: 258 89% 66%;
+
+    --radius: 0.75rem;
+
+    /* Web3 gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(258 89% 66%), hsl(282 85% 70%));
+    --gradient-secondary: linear-gradient(135deg, hsl(222 47% 15%), hsl(222 47% 20%));
+    --gradient-danger: linear-gradient(135deg, hsl(0 84% 60%), hsl(15 84% 60%));
+    --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(158 71% 50%));
+    
+    /* Neumorphic shadows */
+    --shadow-neumorphic: 
+      inset 4px 4px 8px hsl(222 47% 3%),
+      inset -4px -4px 8px hsl(222 47% 12%);
+    --shadow-elevated: 
+      0 8px 32px hsl(222 47% 3% / 0.5),
+      0 2px 8px hsl(258 89% 66% / 0.1);
+    --shadow-glow: 0 0 40px hsl(258 89% 66% / 0.3);
+    
+    /* Animation easing */
+    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +130,35 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter antialiased;
+  }
+}
+
+@layer components {
+  .neumorphic-card {
+    @apply bg-card rounded-xl border border-border/50;
+    box-shadow: var(--shadow-neumorphic);
+  }
+  
+  .elevated-card {
+    @apply bg-card rounded-xl border border-border/30;
+    box-shadow: var(--shadow-elevated);
+  }
+  
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .web3-gradient {
+    background: var(--gradient-primary);
+  }
+  
+  .hover-lift {
+    @apply transition-all duration-300 ease-smooth;
+  }
+  
+  .hover-lift:hover {
+    @apply transform -translate-y-1;
+    box-shadow: var(--shadow-elevated);
   }
 }
