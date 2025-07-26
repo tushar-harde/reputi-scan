@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ReputationScore } from './ReputationScore';
 import { ReputationTags, SAMPLE_TAGS } from './ReputationTags';
 import { WalletCharts } from './WalletCharts';
+import { ContractAnalysis } from './ContractAnalysis';
 import { ArrowLeft, Copy, ExternalLink, BarChart3 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { getAddressType } from '@/utils/addressUtils';
 
 interface WalletDashboardProps {
   address: string;
@@ -15,7 +17,22 @@ interface WalletDashboardProps {
 
 export const WalletDashboard = ({ address, onBack }: WalletDashboardProps) => {
   const [showComparison, setShowComparison] = useState(false);
+  const [addressType, setAddressType] = useState<'wallet' | 'contract' | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const checkAddressType = async () => {
+      try {
+        const type = await getAddressType(address);
+        setAddressType(type);
+      } catch (error) {
+        console.error('Error checking address type:', error);
+        setAddressType('wallet'); // Default to wallet
+      }
+    };
+    
+    checkAddressType();
+  }, [address]);
   
   // Mock data - in real app would fetch from API
   const mockData = {
@@ -56,7 +73,9 @@ export const WalletDashboard = ({ address, onBack }: WalletDashboardProps) => {
               Back
             </Button>
             <div>
-              <h1 className="text-2xl font-bold font-sora">Wallet Analysis</h1>
+              <h1 className="text-2xl font-bold font-sora">
+                {addressType === 'contract' ? 'Contract Analysis' : 'Wallet Analysis'}
+              </h1>
               <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                 <span>{formatAddress(address)}</span>
                 <Button
@@ -90,50 +109,56 @@ export const WalletDashboard = ({ address, onBack }: WalletDashboardProps) => {
 
         {/* Main Content */}
         <div className={`grid gap-6 ${showComparison ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
-          {/* Primary Wallet Analysis */}
+          {/* Primary Analysis */}
           <div className="space-y-6">
-            {/* Wallet Stats */}
-            <Card className="elevated-card p-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">{mockData.balance}</div>
-                  <div className="text-sm text-muted-foreground">Balance</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold">{mockData.totalTxs.toLocaleString()}</div>
-                  <div className="text-sm text-muted-foreground">Transactions</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold">{mockData.firstSeen}</div>
-                  <div className="text-sm text-muted-foreground">First Seen</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold">{mockData.lastActivity}</div>
-                  <div className="text-sm text-muted-foreground">Last Activity</div>
-                </div>
-              </div>
-            </Card>
+            {addressType === 'contract' ? (
+              <ContractAnalysis address={address} />
+            ) : (
+              <>
+                {/* Wallet Stats */}
+                <Card className="elevated-card p-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-primary">{mockData.balance}</div>
+                      <div className="text-sm text-muted-foreground">Balance</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">{mockData.totalTxs.toLocaleString()}</div>
+                      <div className="text-sm text-muted-foreground">Transactions</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">{mockData.firstSeen}</div>
+                      <div className="text-sm text-muted-foreground">First Seen</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">{mockData.lastActivity}</div>
+                      <div className="text-sm text-muted-foreground">Last Activity</div>
+                    </div>
+                  </div>
+                </Card>
 
-            {/* Reputation Score */}
-            <Card className="elevated-card p-6">
-              <ReputationScore score={mockData.score} />
-            </Card>
+                {/* Reputation Score */}
+                <Card className="elevated-card p-6">
+                  <ReputationScore score={mockData.score} />
+                </Card>
 
-            {/* AI Summary */}
-            <Card className="elevated-card p-6">
-              <h3 className="text-lg font-semibold font-sora mb-4">AI Analysis Summary</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                {mockData.summary}
-              </p>
-            </Card>
+                {/* AI Summary */}
+                <Card className="elevated-card p-6">
+                  <h3 className="text-lg font-semibold font-sora mb-4">AI Analysis Summary</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {mockData.summary}
+                  </p>
+                </Card>
 
-            {/* Reputation Tags */}
-            <Card className="elevated-card p-6">
-              <ReputationTags tags={mockData.tags} />
-            </Card>
+                {/* Reputation Tags */}
+                <Card className="elevated-card p-6">
+                  <ReputationTags tags={mockData.tags} />
+                </Card>
 
-            {/* Charts */}
-            <WalletCharts />
+                {/* Charts */}
+                <WalletCharts />
+              </>
+            )}
           </div>
 
           {/* Comparison Panel */}
